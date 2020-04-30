@@ -1,26 +1,172 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component} from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
+import testdata from './testdata';
+import firebase, { auth, provider } from './firebase';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from './components/Header/Header';
+import Items from './components/Items/Items';
+import Stats from './components/Stats/Stats';
+import Settings from './components/Settings/Settings';
+import Menu from './components/Menu/Menu';
+import AddItem from './components/AddItem/AddItem';
+import EditItem from './components/EditItem/EditItem';
+import Content from './components/Content/Content';
+import Button from './components/buttons';
+
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: testdata, //sitten kun testidataa ei enää tarvita, laitetaan tyhjä taulukko []
+      selectList: ["95E10","98E5", "DI", "E85" ],
+      vehicle: ["Auto 1","Auto 2",],
+      user: null,
+      error: null
+    }
+    this.dbRef = firebase.firestore();
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleSelectListForm = this.handleSelectListForm.bind(this);
+    this.handleVehicleForm = this.handleVehicleForm.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ 
+          user: user 
+        });
+
+        this.refData = this.dbRef.collection("users").doc(user.uid).collection('data');
+
+        this.refData.orderBy("tankkauspaiva","desc").onSnapshot((docs) => {
+          let data = [];
+          docs.forEach((doc) => {
+            let docdata =  doc.data();
+            data.push(docdata);
+          });
+          this.setState({
+            data: data
+          });
+        });
+      } 
+    }); 
+  }
+
+  handleFormSubmit(newdata) {
+    // let storeddata = this.state.data.slice();
+    // const index = storeddata.findIndex(item => item.id === newdata.id);
+    // if (index >= 0) {
+    //   storeddata[index] = newdata;
+    // } else {
+    //   storeddata.push(newdata);
+    // }
+    // storeddata.sort((a,b) => {
+    //   const aDate = new Date(a.tankkauspaiva);
+    //   const bDate = new Date(b.tankkauspaiva);
+    //   return bDate.getTime() - aDate.getTime();
+    // });
+    // this.setState({
+    //   data: storeddata
+    // });
+    this.refData.doc(newdata.id).set(newdata);
+  }
+
+  handleSelectListForm(newitem) {
+    let selectList = this.state.selectList.slice();
+    selectList.push(newitem);
+    selectList.sort();
+    this.setState({
+      selectList: selectList
+    }); 
+  }
+
+  handleVehicleForm(newitem) {
+    let selectList = this.state.vehicle.slice();
+    selectList.push(newitem);
+    selectList.sort();
+    this.setState({
+      vehicle: selectList
+    }); 
+  }
+
+  handleDeleteItem(id) {
+    this.refData.doc(id).delete().then().catch(error => {console.error("Virhe tietoa poistettaessa: ", error)})
+  }
+
+  login() {
+    auth.signInWithPopup(provider).then((result) => {
+      const user = result.user;
+      this.setState({
+        user: user,
+        error: null
+      });
+    }).catch((error) => {
+      const errorMessage = error.message;
+      this.setState({
+        error: errorMessage
+      });
+    });
+  }
+
+  logout() {
+    auth.signOut().then(() => {
+      this.setState({
+        user: null
+      });
+      this.refData = null
+    });  
+  }
+
+  render() {
+
+    if (!this.state.user) {
+      return (
+        <Router>
+          <div className="App">
+            <Header/>
+            <Content>
+            <div className="App__welcome">
+                <div>Et ole vielä kirjautunut sisälle.</div>
+                <div><Button primary onClick={this.login}>Kirjaudu sisälle</Button></div>
+                <div>{this.state.error ? <p>{this.state.error}</p> : null}</div>
+              </div>
+            </Content>
+            <Menu />
+          </div>
+        </Router>
+      );
+    }
+
+    return (
+      <Router>
+        <div className="App">
+          <Header/>
+          <Route path="/" exact render={() => <Items data={this.state.data} />} />
+          <Route path="/stats" render={() => <Stats data={this.state.data} />} />
+          <Route path="/settings" render={() => <Settings selectList={this.state.selectList}
+                                                          vehicle={this.state.vehicle}   
+                                                          onFormSubmit={this.handleSelectListForm} 
+                                                          onFormSubmit={this.handleVehicleForm}
+                                                          onLogout={this.logout}
+                                                          user={this.state.user} />} />
+          <Route path="/add" render={() => <AddItem onFormSubmit={this.handleFormSubmit} selectList={this.state.selectList} vehicle={this.state.vehicle} />} />
+          <Route path="/edit/:id" render={(props) => <EditItem data={this.state.data} 
+                                                               selectList={this.state.selectList}
+                                                               vehicle={this.state.vehicle}
+                                                               onFormSubmit={this.handleFormSubmit} 
+                                                               onDeleteItem={this.handleDeleteItem}
+                                                               {...props} />} />
+          <Menu />
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
+
