@@ -1,3 +1,6 @@
+//Ohjelmassa käytettyjen painikkeiden parametrit
+//----------------------------------------------
+
 import React from 'react';
 
 import './buttons.css';

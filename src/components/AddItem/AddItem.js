@@ -1,3 +1,7 @@
+//Uuden tankkaustapahtuman lisääminen. Komponenttiin on tuotu 
+//lomakekomponentti
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import Content from '../Content/Content';
@@ -12,7 +16,7 @@ function AddItem(props) {
 
         <div className="additem">
 
-        <h2>Uuden kulun lisääminen</h2>
+        <h2>Uuden tankkauksen lisääminen</h2>
 
         <ItemForm onFormSubmit={props.onFormSubmit} selectList={props.selectList} vehicle={props.vehicle} />
 

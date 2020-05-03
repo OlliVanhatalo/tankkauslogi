@@ -1,27 +1,30 @@
 import React, { Component} from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import testdata from './testdata';
 import firebase, { auth, provider } from './firebase';
 
 import Header from './components/Header/Header';
 import Items from './components/Items/Items';
+//import Vehicles from './components/Vehicles/Vehicles';
 import Stats from './components/Stats/Stats';
 import Settings from './components/Settings/Settings';
 import Menu from './components/Menu/Menu';
 import AddItem from './components/AddItem/AddItem';
+//import AddVehicle from './components/AddVehicle/AddVehicle';
 import EditItem from './components/EditItem/EditItem';
+//import EditVehicle from './components/EditVehicle/EditVehicle';
 import Content from './components/Content/Content';
 import Button from './components/buttons';
+import vehicledata from './vehicledata';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      data: testdata, //sitten kun testidataa ei enää tarvita, laitetaan tyhjä taulukko []
+      data: [],
       selectList: ["95E10","98E5", "DI", "E85" ],
-      vehicle: ["Auto 1","Auto 2",],
+      vehicle: ['Auto 1','Auto 2'],
       user: null,
       error: null
     }
@@ -41,39 +44,50 @@ class App extends Component {
           user: user 
         });
 
+        //Luodaan tallennettavalle datalle osoitteet tietokantaan
         this.refData = this.dbRef.collection("users").doc(user.uid).collection('data');
-
-        this.refData.orderBy("tankkauspaiva","desc").onSnapshot((docs) => {
+        
+        //Luodaan tankkausten ja ajoneuvojen datalle tietokokoelmat tietokannassa,
+        //käydään läpi siellä olevat tiedot ja tuodaan ne App.js:än this.stateen.
+        this.unsubscribe = this.refData.orderBy("tankkauspaiva","desc").onSnapshot((docs) => {
           let data = [];
           docs.forEach((doc) => {
             let docdata =  doc.data();
             data.push(docdata);
+            
           });
           this.setState({
             data: data
           });
         });
+
+        //Tämä osuus liityy uusien ajoneuvojen tallentamiseen tietokantaan,
+        //mutta en lopultakaan saanut sitä toimimaan
+        //------------------------------------------------------------------
+        // this.refVehicleData = this.dbRef.collection("users").doc(user.uid).collection('vehicledata');
+
+        // this.unsubscribe = this.refData.onSnapshot((docs) => {
+        //   let vehicle = [];
+        //   docs.forEach((doc) => {
+        //     let docdata =  doc.data();
+        //     vehicle.push(vehicle);
+        //   });
+        //   this.setState({
+        //     vehicle: vehicle
+        //   });
+        // });
+        //------------------------------------------------------------------
       } 
     }); 
   }
 
   handleFormSubmit(newdata) {
-    // let storeddata = this.state.data.slice();
-    // const index = storeddata.findIndex(item => item.id === newdata.id);
-    // if (index >= 0) {
-    //   storeddata[index] = newdata;
-    // } else {
-    //   storeddata.push(newdata);
-    // }
-    // storeddata.sort((a,b) => {
-    //   const aDate = new Date(a.tankkauspaiva);
-    //   const bDate = new Date(b.tankkauspaiva);
-    //   return bDate.getTime() - aDate.getTime();
-    // });
-    // this.setState({
-    //   data: storeddata
-    // });
     this.refData.doc(newdata.id).set(newdata);
+
+    //Tämä pätkä liittyy myös ajoneuvojen tallentamiseen, joka ei toiminut
+    //--------------------------------------------------------------------
+    // this.refVehicleData.doc(newdata.id).set(newdata);
+    //--------------------------------------------------------------------
   }
 
   handleSelectListForm(newitem) {
@@ -86,16 +100,17 @@ class App extends Component {
   }
 
   handleVehicleForm(newitem) {
-    let selectList = this.state.vehicle.slice();
-    selectList.push(newitem);
-    selectList.sort();
+    let vehicle = this.state.vehicle.slice();
+    vehicle.push(newitem);
+    vehicle.sort();
     this.setState({
-      vehicle: selectList
+      vehicle: vehicle
     }); 
   }
 
   handleDeleteItem(id) {
     this.refData.doc(id).delete().then().catch(error => {console.error("Virhe tietoa poistettaessa: ", error)})
+    //this.vehicleData.doc(id).delete().then().catch(error => {console.error("Virhe tietoa poistettaessa: ", error)})
   }
 
   login() {
@@ -114,6 +129,7 @@ class App extends Component {
   }
 
   logout() {
+    this.unsubscribe();
     auth.signOut().then(() => {
       this.setState({
         user: null
@@ -148,19 +164,36 @@ class App extends Component {
           <Header/>
           <Route path="/" exact render={() => <Items data={this.state.data} />} />
           <Route path="/stats" render={() => <Stats data={this.state.data} />} />
-          <Route path="/settings" render={() => <Settings selectList={this.state.selectList}
-                                                          vehicle={this.state.vehicle}   
-                                                          onFormSubmit={this.handleSelectListForm} 
+          <Route path="/settings" render={() => <Settings data={this.state.vehicle}  
                                                           onFormSubmit={this.handleVehicleForm}
                                                           onLogout={this.logout}
-                                                          user={this.state.user} />} />
-          <Route path="/add" render={() => <AddItem onFormSubmit={this.handleFormSubmit} selectList={this.state.selectList} vehicle={this.state.vehicle} />} />
+                                                          user={this.state.user}
+                                                          />} />
+          <Route path="/add" render={() => <AddItem onFormSubmit={this.handleFormSubmit} 
+                                                    selectList={this.state.selectList} 
+                                                    vehicle={this.state.vehicle} />} />
           <Route path="/edit/:id" render={(props) => <EditItem data={this.state.data} 
                                                                selectList={this.state.selectList}
                                                                vehicle={this.state.vehicle}
                                                                onFormSubmit={this.handleFormSubmit} 
                                                                onDeleteItem={this.handleDeleteItem}
                                                                {...props} />} />
+
+
+          {/*Nämä reititykset liittyvät lisättävien ajoneuvojen korttirakenteeseen. Korttirakenteessa 
+          on jotain oleellista vialla, enkä ole vielä keksinyt mikä. Koodit on jätetty olemaan
+          myöhempää ongelman ratkaisua varten.
+          ------------------------------------------------------------------------------------------- 
+          <Route path="/vehicles" render={() => <Vehicles data={this.state.vehicle} />} />          
+          <Route path="/addvehicle" render={() => <AddVehicle onFormSubmit={this.handleFormSubmit} 
+                                                              selectList={this.state.selectList} 
+                                                              vehicle={this.state.vehicle} />} />
+          <Route path="/editvehicle/:id" render={(props) => <EditVehicle data={this.state.data}
+                                                               vehicle={this.state.vehicle}
+                                                               onFormSubmit={this.handleFormSubmit} 
+                                                               onDeleteItem={this.handleDeleteItem}
+                                                               {...props} />} /> 
+          ------------------------------------------------------------------------------------------- */}
           <Menu />
         </div>
       </Router>

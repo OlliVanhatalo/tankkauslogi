@@ -1,22 +1,23 @@
+//Komponentti sisältää input-kentät uuden ajoneuvon lisäämistä varten.
+//Sisällytetty Ajoneuvokortti-, AddVehicle- ja EditVehicle-komponentteihin.
+//KOMPONENTTI EI KÄYTÖSSÄ!
+//--------------------------------------------------------------------------
+
 import React from 'react';
 import { withRouter } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../buttons';
 
-import './ItemForm.css'
+import './VehicleForm.css'
 
-class ItemForm extends React.Component {
+class VehicleForm extends React.Component {
 
     constructor(props) {
         super(props);
         const data = props.data ? props.data : {
-            tyyppi: "95E10",
-            summa: 0,
-            litraa: 0,
-            tankkauspaiva: "",
-            ajoneuvo: "Auto 1",
-            litrahinta: ""
+            vehicleid: "",
+            vehiclename: "Oma auto"
          }
         this.state = {
             data: data
@@ -65,45 +66,16 @@ class ItemForm extends React.Component {
         return(
             <form onSubmit={this.handleSubmit}>
 
-            <div className="itemform">
+            <div className="vehicleform">
 
-                <div className="itemform__row">
+                <div className="vehicleform__row">
                 <div>
-                    <label htmlFor="tyyppi">Polttoainetyyppi</label>
-                    <select name="tyyppi" value={this.state.data.tyyppi} onChange={this.handleInputChange}>
-
-                        {this.props.selectList.map(item => <option value={item} key={item}>{item}</option>)}
-
-                    </select>
+                    <label htmlFor="vehicle">Ajoneuvon nimi</label>
+                    <input type="text" name="vehicle" value={this.state.data.nimi} onChange={this.handleInputChange}/>
                 </div>
-                </div>
-
-                <div className="itemform__row">
                 <div>
-                    <label htmlFor="summa">Summa</label>
-                    <input type="number" name="summa" step="0.01" value={this.state.data.summa} onChange={this.handleInputChange}/>
-                </div>
-
-                <div>
-                    <label htmlFor="litraa">Litraa</label>
-                    <input type="number" name="litraa" value={this.state.data.litraa} onChange={this.handleInputChange}/>
-                </div>
-                </div>
-
-                <div className="itemform__row">
-                <div>
-                    <label htmlFor="tankkauspaiva">Tankkauspäivä</label>
-                    <input type="date" name="tankkauspaiva" size="10" value={this.state.data.tankkauspaiva} onChange={this.handleInputChange}/>
-                </div>
-                </div>
-
-                <div className="itemform__row">
-                <div>
-                <label htmlFor="ajoneuvo">Ajoneuvo</label>
-                    <select name="ajoneuvo" value={this.state.data.ajoneuvo} onChange={this.handleInputChange}>
-
-                        {this.props.vehicle.map(item => <option value={item} key={item}>{item}</option>)}
-                    </select>
+                    {/* <label htmlFor="id">Rekisterinumero</label>
+                    <input type="text" name="id" value={this.state.data.id} onChange={this.handleInputChange}/> */}
                 </div>
                 </div>
 
@@ -119,7 +91,7 @@ class ItemForm extends React.Component {
                 { this.props.onDeleteItem ? 
                     <div className="itemform__row">
                         <div>
-                            <Button secondary onClick={this.handleDeleteItem}>POISTA</Button> 
+                            <Button onClick={this.handleDeleteItem}>POISTA</Button> 
                         </div>
                         <div></div>
                     </div> : "" }
@@ -131,4 +103,4 @@ class ItemForm extends React.Component {
     }
 }
 
-export default withRouter(ItemForm);
+export default withRouter(VehicleForm);

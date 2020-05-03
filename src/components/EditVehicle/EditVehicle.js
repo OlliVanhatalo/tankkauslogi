@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Content from '../Content/Content';
-import ItemForm from '../ItemForm/ItemForm';
+import VehicleForm from '../VehicleForm/VehicleForm';
 
 
-import './EditItem.css';
+import './EditVehicle.css';
 
-function EditItem(props) {
+function EditVehicle(props) {
 
     const index = props.data.findIndex(item => item.id === props.match.params.id);
 
@@ -15,12 +15,11 @@ function EditItem(props) {
     return (
       <Content>
 
-        <div className="edititem">
+        <div className="editvehicle">
 
         <h2>Tankkauksen muokkaaminen</h2>
 
-        <ItemForm onFormSubmit={props.onFormSubmit} 
-                  selectList={props.selectList} 
+        <VehicleForm onFormSubmit={props.onFormSubmit}  
                   data={itemData} 
                   onDeleteItem={props.onDeleteItem} 
                   vehicle={props.vehicle}/>
@@ -30,4 +29,4 @@ function EditItem(props) {
     )
   }
 
-export default EditItem;
+export default EditVehicle;

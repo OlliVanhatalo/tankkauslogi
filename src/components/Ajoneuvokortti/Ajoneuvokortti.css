@@ -1,0 +1,40 @@
+.ajoneuvokortti {
+    border-bottom: 1px solid #BADDFE;
+    display: flex;
+  }
+  
+  .ajoneuvokortti__rivi {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .ajoneuvokortti__tyyppi, .ajoneuvokortti__summa {
+    font-weight: bold;
+  }
+  
+  .ajoneuvokortti__tankkauspaiva, .ajoneuvokortti__litraa, .ajoneuvokortti__ajoneuvo, .ajoneuvokortti__litrahinta {
+    font-size: 85%;
+    color: #666;
+  
+  }
+
+  .ajoneuvokortti > div {
+    flex: 1 1 auto;
+    padding: 1em;
+  }
+
+  .ajoneuvokortti__linkki {
+    max-width: 1em;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .ajoneuvokortti:hover .kulukortti__linkki {
+    display: flex;
+  }
+
+  .ajoneuvokortti__linkki a {
+    color: #000;
+  }

@@ -12,6 +12,8 @@
   display: flex;
   flex-direction: column;
   font-family: 'Nunito', sans-serif;
+  background-image: url("images/silver-955496_1920.jpg");
+  background-position: center;
 }
 .App > * {
   flex: 1 1 auto;

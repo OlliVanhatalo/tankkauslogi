@@ -10,8 +10,8 @@ import './Kulukortti.css'
 function Kulukortti(props){
 
     let tankkauspaiva = moment(props.data.tankkauspaiva);
-    let kausi = "";
-    let litrahinta = "";
+    
+    //let litrahinta = "";
     // if (props.data.kaudenalku && props.data.kaudenloppu) {
     //   let kaudenalku = moment(props.data.kaudenalku);
     //   let kaudenloppu = moment(props.data.kaudenloppu);
@@ -34,10 +34,12 @@ function Kulukortti(props){
         </div>
         <div className="kulukortti__rivi">
           <div className="kulukortti__ajoneuvo">{props.data.ajoneuvo}</div>
-          <div className="kulukortti__litrahinta">{props.data.litrahinta}x€/l</div>
-          {/* litrahinta ? litrahinta.toFixed(2) + " € / kk" : ""
+          
+          {/* <div className="kulukortti__litrahinta">{props.data.litrahinta}x€/l</div>
+          litrahinta ? litrahinta.toFixed(2) + " € / kk" : ""
           yllä oleva tallessa kulukortti__litrahinnan tagien välistä, 
           TODO funktio jolla lasketaan litrahinta 2 desimaalin tarkkuudella */}
+          
         </div>
         </div>
         <div className="kulukortti__linkki">

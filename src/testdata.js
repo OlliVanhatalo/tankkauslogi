@@ -27,8 +27,7 @@ const testdata = [
     tankkauspaiva: '2019-01-07',
     ajoneuvo: 'Auto 2', 
     litrahinta: 1.62 },
-    
-
 ];
 
-export default testdata
+export default testdata;
+

@@ -1,5 +1,5 @@
 .menu {
-    background-color: #000;
+    background-color: rgb(105, 104, 104);
     display: flex;
     justify-content: space-evenly;
     max-height: 3em;
