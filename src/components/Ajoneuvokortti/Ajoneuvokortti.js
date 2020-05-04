@@ -1,6 +1,6 @@
 //Komponentin on tarkoitus sisältää lisättyjen ajoneuvojen tiedot
-//KOMPONENTTI EI KÄYTÖSSÄ
-//---------------------------------------------------------------
+//KOMPONENTTI EI KÄYTÖSSÄ! VAATII KEHITTÄMISTÄ!
+//-----------------------------------------------------------
 
 import React from 'react';
 

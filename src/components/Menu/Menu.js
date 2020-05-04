@@ -1,3 +1,7 @@
+//Menupalkin tulostava komponentti. Sisältää reitityksen "etusivulle",
+//statistiikkasivulle sekä settings/profiili-sivulle
+//-----------------------------------------------------------
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -1,3 +1,8 @@
+//Pääkomponentti. Ajoneuvokorttien käsittelyyn liittyvät reititykset on 
+//kommentoitu pois käytöstä, koska niiden toiminta vaatii vielä kehittämistä.
+//Sovelluksen tietokanta ja hosting perustettu firebaseen
+//--------------------------------------------------------------------------------
+
 import React, { Component} from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
@@ -15,7 +20,7 @@ import EditItem from './components/EditItem/EditItem';
 //import EditVehicle from './components/EditVehicle/EditVehicle';
 import Content from './components/Content/Content';
 import Button from './components/buttons';
-import vehicledata from './vehicledata';
+//import vehicledata from './vehicledata';
 
 class App extends Component {
 
@@ -138,8 +143,11 @@ class App extends Component {
     });  
   }
 
+  
   render() {
 
+    //Tämä näkymä avautuu kun käyttäjä ei ole vielä kirjautunut palveluun
+    //-------------------------------------------------------------------------------
     if (!this.state.user) {
       return (
         <Router>
@@ -158,6 +166,8 @@ class App extends Component {
       );
     }
 
+    //Tämä näkymä avautuu kun käyttäjä ON kirjautunut palveluun
+    //-------------------------------------------------------------------------------
     return (
       <Router>
         <div className="App">

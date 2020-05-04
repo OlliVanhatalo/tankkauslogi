@@ -1,6 +1,6 @@
 //Komponentti sisältää ajoneuvokorttien datan sekä painikkeen ja reitityksen
 //uusien korttien lisäämiseen.
-//KOMPONENTTI EI KÄYTÖSSÄ!
+//KOMPONENTTI EI KÄYTÖSSÄ! VAATII KEHITTÄMISTÄ!
 //--------------------------------------------------------------------------
 
 import React from 'react';

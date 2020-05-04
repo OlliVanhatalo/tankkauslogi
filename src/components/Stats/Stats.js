@@ -1,3 +1,6 @@
+//Tässä komponentissa tulostetaan tankkauskertoihin liittyvää statistiikkaa.
+//-------------------------------------------------------------------------
+
 import React from 'react';
 
 import Content from '../Content/Content';
@@ -9,6 +12,9 @@ import './Stats.css';
 
 function Stats(props) {
 
+    //Koostetaan tankkauskorteista tuotu tieto, jotta sitä voidaan hyödyntää 
+    //seuraavissa kaavioissa
+    //-----------------------------------------------------------------------------
     const reducer = (groupedData, currentItem) => {
       const index = groupedData.findIndex(item => item.tyyppi === currentItem.tyyppi);
       if (index >= 0) {
@@ -21,6 +27,8 @@ function Stats(props) {
 
     let groupedData = props.data.reduce(reducer, []);
 
+    //Määritellään ympyrädiagrammin syöte ja värimuotoilu
+    //------------------------------------------------------------------------------
     let doughnutData = {
       labels: groupedData.map(item => item.tyyppi),
       datasets :  [
@@ -33,6 +41,8 @@ function Stats(props) {
       ]
     }
 
+    //Määritellään viivadiagrammin syötteet, x- ja y-akselit ja värimuotoilu
+    //------------------------------------------------------------------------------
     let linedata = props.data.map( item => ({x: item.tankkauspaiva, y:item.summa}) );
     let linedata2 = props.data.map( item => ({x: item.tankkauspaiva, y:item.litraa}) );
 
@@ -73,7 +83,8 @@ function Stats(props) {
       }
     }
 
-
+    //Tulostetaan diagrammit
+    //-----------------------------------------------------------------------------
     return (
       <Content>
         <div className ="stats">

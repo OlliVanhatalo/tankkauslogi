@@ -1,3 +1,6 @@
+//Muotoilukomponentti. Sisältää sivun headerin sisällön
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import './Header.css'

@@ -1,3 +1,9 @@
+//Tankkaustapahtumien tulostus. Kirjoitetaan App.js komponentissa.
+//Komponenttiin tuodaan kaikkien tallennettujen tankkaustapahtumien
+//datakortit. Lisäksi komponentti tulostaa sivun alareunaan 
+//painikkeen, josta pääsee lisäämään uuden tankkauksen.
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import { Link } from 'react-router-dom';

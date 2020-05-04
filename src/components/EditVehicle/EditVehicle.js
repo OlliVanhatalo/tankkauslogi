@@ -1,3 +1,9 @@
+//Ajoneuvon muokkaaminen. Vastaava kuin AddVehicle.
+//Lisäominaisuutena lomaketiedon tuonti jo tehdystä ajoneuvosta, 
+//sekä ajoneuvon poistamisen mahdollistavan toiminnallisuuden tuonti
+//KOMPONENTTI EI KÄYTÖSSÄ! VAATII KEHITTÄMISTÄ!
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import Content from '../Content/Content';

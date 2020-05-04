@@ -1,6 +1,6 @@
 //Komponentti sisältää input-kentät uuden ajoneuvon lisäämistä varten.
 //Sisällytetty Ajoneuvokortti-, AddVehicle- ja EditVehicle-komponentteihin.
-//KOMPONENTTI EI KÄYTÖSSÄ!
+//KOMPONENTTI EI KÄYTÖSSÄ! VAATII KEHITTÄMISTÄ!
 //--------------------------------------------------------------------------
 
 import React from 'react';

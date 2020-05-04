@@ -1,3 +1,8 @@
+//Tankkaustapahtuman muokkaaminen. Vastaava kuin AddItem. 
+//Lisäominaisuutena lomaketiedon tuonti jo tehdystä tapahtumasta, 
+//sekä lomakkeen poistamisen mahdollistavan toiminnallisuuden tuonti
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import Content from '../Content/Content';

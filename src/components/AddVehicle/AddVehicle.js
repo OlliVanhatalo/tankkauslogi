@@ -1,3 +1,8 @@
+//Uuden ajoneuvon lisääminen. Komponenttiin on tuotu 
+//lomakekomponentti
+//KOMPONENTTI EI KÄYTÖSSÄ! VAATII KEHITTÄMISTÄ!
+//-----------------------------------------------------------
+
 import React from 'react';
 
 import Content from '../Content/Content';

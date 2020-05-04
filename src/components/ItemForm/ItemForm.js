@@ -1,3 +1,10 @@
+//Tankkaustapahtumalomake. Sisältää kentät, joihin voidaan täyttää
+//uuden tankkaustapahtuman tiedot. Komponenttia hyödynnetty sekä 
+//AddItem että EditItem komponenteissa. Sisältää vaadittavat 
+//toiminnallisuudet tietojen lisäämiseen, muokkaamiseen tai koko
+//tapahtuman poistamiseen.
+//-----------------------------------------------------------
+
 import React from 'react';
 import { withRouter } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,13 +21,14 @@ class ItemForm extends React.Component {
             tyyppi: "95E10",
             summa: 0,
             litraa: 0,
-            tankkauspaiva: "",
+            tankkauspaiva: 10/10/2020,
             ajoneuvo: "Auto 1",
-            litrahinta: ""
+            litrahinta: "",
          }
         this.state = {
             data: data
         };
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -60,7 +68,8 @@ class ItemForm extends React.Component {
         this.props.history.push("/");
     }
 
-
+    //Tulostetaan lomakkeen syöttökentät
+    //-------------------------------------------------------------------------
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
